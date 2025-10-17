@@ -40,17 +40,3 @@ variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b"]
 }
 
-# 标签配置（统一管理）
-variable "tags" {
-  description = "Common tags for all resources"
-  type        = object({
-    project     = string
-    owner       = string
-    environment = string
-  })
-  default = {
-    project     = "three-tier-architecture"
-    owner       = "dev-team"
-    environment = var.environment  # 关联环境变量
-  }
-}
