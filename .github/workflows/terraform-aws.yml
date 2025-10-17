@@ -8,9 +8,13 @@ on:
 
 # 环境变量配置
 env:
-  AWS_REGION: "ap-southeast-1"  # 新加坡区域
   TF_STATE_BUCKET: "james-tf-state-bucket-ap-southeast-1"  # 你的S3桶名
   TF_STATE_KEY: "three-tier/terraform.tfstate"  # 状态文件路径
+  APP_NAME: "my-app"
+  # 引用仓库 Secrets（敏感信息，自动注入所有 Job）
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_REGION: ${{ secrets.AWS_REGION_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
 
 jobs:
   # 1. 验证Terraform配置
