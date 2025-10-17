@@ -28,10 +28,6 @@ resource "aws_security_group" "public_layer" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  tags = merge(var.tags, {
-    Name = "${var.environment}-public-layer-sg"
-  })
 }
 
 # 应用层安全组（仅允许来自公有层的流量）
@@ -57,9 +53,6 @@ resource "aws_security_group" "app_layer" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(var.tags, {
-    Name = "${var.environment}-app-layer-sg"
-  })
 }
 
 # 数据层安全组（预留，仅允许来自应用层的流量）
@@ -85,7 +78,4 @@ resource "aws_security_group" "data_layer" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(var.tags, {
-    Name = "${var.environment}-data-layer-sg"
-  })
 }
