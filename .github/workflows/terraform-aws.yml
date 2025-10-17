@@ -13,7 +13,7 @@ env:
   APP_NAME: "my-app"
   # 引用仓库 Secrets（敏感信息，自动注入所有 Job）
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_REGION: ${{ secrets.AWS_REGION_ID }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID }}
 
 jobs:
