@@ -80,7 +80,7 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     needs: plan
-    environment: production  # 关联到GitHub环境，用于设置手动批准
+    environment: build  # 关联到GitHub环境，用于设置手动批准
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
