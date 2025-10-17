@@ -1,81 +1,44 @@
-# 公有层安全组（如负载均衡器）
-resource "aws_security_group" "public_layer" {
-  name        = "${var.environment}-public-layer-sg"
-  description = "Allow HTTP/HTTPS from internet"
-  vpc_id      = aws_vpc.main.id
-
-  # 允许互联网访问80/443端口
-  ingress {
-    description = "HTTP from internet"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "HTTPS from internet"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # 允许所有出站流量
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+# 环境标识（如dev、prod）
+variable "environment" {
+  description = "Environment identifier (e.g. dev, prod)"
+  type        = string
+  default     = "dev"
 }
 
-# 应用层安全组（仅允许来自公有层的流量）
-resource "aws_security_group" "app_layer" {
-  name        = "${var.environment}-app-layer-sg"
-  description = "Allow traffic from public layer"
-  vpc_id      = aws_vpc.main.id
-
-  # 允许来自公有层安全组的应用端口（示例8080）
-  ingress {
-    description     = "App traffic from public layer"
-    from_port       = 8080
-    to_port         = 8080
-    protocol        = "tcp"
-    security_groups = [aws_security_group.public_layer.id]
-  }
-
-  # 允许所有出站流量
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
+# VPC CIDR块
+variable "vpc_cidr" {
+  description = "CIDR block for the VPC"
+  type        = string
+  default     = "10.0.0.0/16"
 }
 
-# 数据层安全组（预留，仅允许来自应用层的流量）
-resource "aws_security_group" "data_layer" {
-  name        = "${var.environment}-data-layer-sg"
-  description = "Allow traffic from app layer"
-  vpc_id      = aws_vpc.main.id
-
-  # 允许来自应用层安全组的自定义端口（示例3306）
-  ingress {
-    description     = "Data traffic from app layer"
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [aws_security_group.app_layer.id]
-  }
-
-  # 允许所有出站流量
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
+# 公有子网CIDR（2个可用区）
+variable "public_subnet_cidrs" {
+  description = "List of CIDR blocks for public subnets"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
+
+# 私有应用子网CIDR（2个可用区）
+variable "app_subnet_cidrs" {
+  description = "List of CIDR blocks for application subnets"
+  type        = list(string)
+  default     = ["10.0.11.0/24", "10.0.12.0/24"]
+}
+
+# 私有数据子网CIDR（2个可用区，预留数据层）
+variable "data_subnet_cidrs" {
+  description = "List of CIDR blocks for data subnets"
+  type        = list(string)
+  default     = ["10.0.21.0/24", "10.0.22.0/24"]
+}
+
+# 可用区列表
+variable "availability_zones" {
+  description = "List of availability zones to use"
+  type        = list(string)
+  default     = ["ap-southeast-1", "ap-southeast-1"]
+}
+
+
+
