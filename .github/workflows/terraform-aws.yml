@@ -109,7 +109,7 @@ jobs:
   # 4. 生成销毁计划
   plan-destroy:
     runs-on: ubuntu-latest
-    needs: validate
+    needs: apply
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
