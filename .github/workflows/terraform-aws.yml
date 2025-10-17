@@ -75,9 +75,6 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     needs: plan
-    if: |
-      github.ref == 'refs/heads/main' &&  # 仅main分支
-      needs.plan.outputs.tfplan_exitcode == '0'  # 计划成功生成
     environment: production  # 关联到GitHub环境，用于设置手动批准
     steps:
       - name: 检出代码
