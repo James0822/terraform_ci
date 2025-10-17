@@ -81,3 +81,4 @@ resource "aws_route_table_association" "data_private" {
   subnet_id      = aws_subnet.data_private[count.index].id
   route_table_id = aws_route_table.data_private.id
 }
+  
